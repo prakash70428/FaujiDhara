@@ -106,14 +106,14 @@ Ye Clean Architecture ka simple version hai: **UI → hooks → data → Supabas
 **Why:** Ye app ka asli business value hai, yahin Fauji aur Kisan milte hain.
 **Done when:** Listing banao, filter karke dhoondo, aur owner se contact karo.
 
-### Phase 6 — Fasal Calendar (Crop Guide)
+### Phase 6 — Fasal Calendar (Crop Guide) ✅ _(pehle kiya; guide: `docs/fasal-3d-guide.md`)_
 
 **What:** Rabi/Kharif/Zaid ki jaankari, aur state + mahine ke hisab se sabzi, phal, phool. Ye data Gemini chat se aayega, par **pehle galtiyan theek karni hongi** (Makhana, Mahua, Walnut wagairah) aur chhoote states jodne honge.
 **Why:** Offline kaam karne wala useful content, bina internet ke bhi value deta hai.
 **How:** Data app ke andar JSON file mein, typed TypeScript ke saath. Server ki zaroorat nahi.
 **Done when:** Apna state aur mahina chuno, aur sahi list dikhe.
 
-### Phase 7 — 3D Plant Card
+### Phase 7 — 3D Plant Card ✅ _(procedural 3D; asli phone pe speed test baaki)_
 
 **What:** Aapka doosra prompt: `Plant3DViewer.tsx` (scene), `DimensionLines.tsx` (CAD-style naap), `PlantCard.tsx` (UI wrapper), soil plane, root/canopy measurements, X-Ray toggle, growth-stage slider.
 **Why yahan:** Ab tak core app stable hoga. 3D ko Fasal Calendar se jodenge (fasal pe tap karo toh 3D dikhe).
