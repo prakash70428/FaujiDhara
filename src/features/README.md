@@ -23,3 +23,8 @@ feed/
 Rule: arrows only point one way. **screen → hooks → data → Supabase.**
 A screen never imports Supabase directly, and `domain/` never imports from the other layers.
 Shared things go in `src/shared/`, not in another feature.
+One documented exception: `auth` reads the state list from `crops/data/cropRepository`,
+because profiles must use the same state ids as the Fasal Calendar.
+
+Backend access lives in `src/core/supabase/` (`getSupabase()`, `fromSupabaseError()`),
+and only `data/` files may import it.

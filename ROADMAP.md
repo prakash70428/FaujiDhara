@@ -83,7 +83,7 @@ Ye Clean Architecture ka simple version hai: **UI → hooks → data → Supabas
 **Why:** Neev mazboot ho toh har agla feature same pattern pe banta hai, aur code bikharta nahi.
 **Done when:** App phone pe Expo Go mein khule, tabs ke beech navigate ho, aur shared Button/Card dikhe.
 
-### Phase 3 — Backend + Auth
+### Phase 3 — Backend + Auth ✅ _(guide: `docs/phase-3-guide.md`; Supabase project setup tumhare haath mein)_
 
 **What:**
 
@@ -132,7 +132,7 @@ Ye Clean Architecture ka simple version hai: **UI → hooks → data → Supabas
 
 ### Phase 10 — Release
 
-**What:** EAS Build, app icon + splash, Privacy Policy (phone number aur documents lete hain, toh zaroori hai), Play Store listing, crash reporting (Sentry).
+**What:** EAS Build, app icon + splash, Privacy Policy (phone number aur documents lete hain, toh zaroori hai), account delete karne ka option (app ke andar + web link, Play Store ki policy), Supabase se test phone numbers hatana, asli SMS provider, Play Store listing, crash reporting (Sentry).
 
 ---
 
@@ -142,6 +142,6 @@ Phase 2 → 3 → 4 → 5 → 6, plus Phase 10 ka minimum. 3D, verification badg
 
 ## Abhi khule sawaal
 
-1. App ka naam: **Fauji Khet** ya **FaujiDhara** (folder ka naam)?
-2. Backend: **Supabase** (recommended) ya apna server?
+1. ~~App ka naam~~ → **FaujiDhara** (decided)
+2. ~~Backend~~ → **Supabase**, Phone OTP login (decided)
 3. Pehle sirf Android, ya iOS bhi? (Recommended: Android pehle, kyunki zyada users wahi hain)

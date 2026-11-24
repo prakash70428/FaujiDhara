@@ -5,6 +5,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@react-three/fiber": "^9.8.2",
+    "@supabase/supabase-js": "^2.119.2",
     "expo": "~58.0.26",
     "expo-asset": "~58.0.21",
     "expo-constants": "~58.0.16",
@@ -13,6 +14,8 @@
     "expo-gl": "~58.0.4",
     "expo-linking": "~58.0.17",
     "expo-router": "~58.0.32",
+    "expo-splash-screen": "~58.0.14",
+    "expo-sqlite": "~58.0.18",
     "expo-status-bar": "~58.0.5",
     "nativewind": "4.2.7",
     "react": "19.3.0",
@@ -26,6 +29,7 @@
     "three": "^0.187.0"
   },
   "devDependencies": {
+    "@types/node": "^22.20.5",
     "@types/react": "~19.3.0",
     "@types/three": "^0.187.0",
     "eslint": "^9.39.5",
@@ -45,7 +49,8 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate:crops": "tsx scripts/validate-crops.ts"
+    "validate:crops": "tsx scripts/validate-crops.ts",
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "private": true
 }

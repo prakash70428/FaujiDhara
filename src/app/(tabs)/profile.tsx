@@ -1,44 +1,114 @@
-import { useState } from 'react';
-import { Text } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
+import { useState, type ComponentProps } from 'react';
+import { Alert, Platform, Text, View } from 'react-native';
 
-import { Button, Card, Input, Screen } from '@/shared/ui';
+import { getUserMessage } from '@/core/errors';
+import { formatIndianMobile } from '@/features/auth/domain/phone';
+import { ROLE_INFO } from '@/features/auth/domain/types';
+import { useAuth, useSignedInUser } from '@/features/auth/hooks/AuthProvider';
+import { useStateName } from '@/features/auth/hooks/useStateOptions';
+import { colors } from '@/shared/theme/colors';
+import { Button, Card, Screen } from '@/shared/ui';
 
-// Phase 3 will turn this into the real profile. For now it showcases the shared UI kit,
-// so you can see every component on a phone and check the theme.
+/** The logged-in user's profile, with edit and logout. */
 export default function ProfileScreen() {
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const nameError =
-    name.length > 0 && name.trim().length < 2 ? 'Naam kam se kam 2 akshar ka ho' : undefined;
+  const { session, profile } = useSignedInUser();
+  const { signOut } = useAuth();
+  const stateName = useStateName(profile.stateId) ?? profile.stateId;
+  const [signingOut, setSigningOut] = useState(false);
 
-  function fakeSave() {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1200);
+  const roleTitle = profile.role === 'ADMIN' ? 'Admin' : ROLE_INFO[profile.role].title;
+  const phone = session.user.phone ? formatIndianMobile(`+${session.user.phone}`) : '—';
+
+  async function doSignOut() {
+    setSigningOut(true);
+    try {
+      await signOut(); // the guard in _layout.tsx then shows the login screen
+    } catch (e) {
+      setSigningOut(false);
+      showMessage('Logout nahi hua', getUserMessage(e));
+    }
+  }
+
+  function confirmSignOut() {
+    if (Platform.OS === 'web') {
+      // Alert with buttons doesn't exist in browsers.
+      if (window.confirm('Kya aap logout karna chahte hain?')) void doSignOut();
+      return;
+    }
+    Alert.alert('Logout', 'Kya aap logout karna chahte hain?', [
+      { text: 'Nahi', style: 'cancel' },
+      { text: 'Haan, logout', style: 'destructive', onPress: () => void doSignOut() },
+    ]);
   }
 
   return (
-    <Screen scroll>
-      <Card className="gap-1">
-        <Text className="text-lg font-bold text-ink">UI Kit preview</Text>
-        <Text className="text-sm text-ink-muted">
-          Phase 2: shared components. Phase 3 mein yahan asli profile aayegi.
-        </Text>
+    <Screen scroll className="w-full max-w-[640px] self-center pb-12">
+      <Card className="items-center gap-3 py-6">
+        <View className="h-20 w-20 items-center justify-center rounded-full bg-primary-600">
+          <Text className="text-3xl font-bold text-white">{initials(profile.fullName)}</Text>
+        </View>
+        <View className="items-center gap-1">
+          <View className="flex-row items-center gap-1.5">
+            <Text className="text-xl font-bold text-ink">{profile.fullName}</Text>
+            {profile.isVerified ? (
+              <Ionicons name="checkmark-circle" size={20} color={colors.success} />
+            ) : null}
+          </View>
+          <View className="rounded-full bg-primary-50 px-3 py-1">
+            <Text className="text-xs font-semibold text-primary-700">{roleTitle}</Text>
+          </View>
+        </View>
       </Card>
 
       <Card className="gap-4">
-        <Input
-          label="Aapka naam"
-          placeholder="Jaise: Ramesh Singh"
-          value={name}
-          onChangeText={setName}
-          error={nameError}
+        <Row icon="call-outline" label="Mobile" value={phone} />
+        <Row icon="location-outline" label="Rajya" value={stateName} />
+        <Row icon="map-outline" label="Zila" value={profile.district} />
+        <Row
+          icon={profile.isVerified ? 'shield-checkmark-outline' : 'shield-outline'}
+          label="Verification"
+          value={profile.isVerified ? 'Verified' : 'Abhi verified nahi (jald aa raha hai)'}
         />
-        <Button title="Save karein" loading={loading} onPress={fakeSave} />
-        <Button title="Secondary" variant="secondary" />
-        <Button title="Ghost" variant="ghost" />
-        <Button title="Bada button (lg)" size="lg" />
-        <Button title="Disabled" disabled />
       </Card>
+
+      <Button
+        title="Profile badlein"
+        variant="secondary"
+        onPress={() => router.push('/edit-profile')}
+      />
+      <Button title="Logout" variant="ghost" loading={signingOut} onPress={confirmSignOut} />
     </Screen>
   );
+}
+
+function Row({
+  icon,
+  label,
+  value,
+}: {
+  icon: ComponentProps<typeof Ionicons>['name'];
+  label: string;
+  value: string;
+}) {
+  return (
+    <View className="flex-row items-center gap-3">
+      <Ionicons name={icon} size={20} color={colors.primary[600]} />
+      <Text className="w-24 text-sm text-ink-muted">{label}</Text>
+      <Text className="flex-1 text-base text-ink">{value}</Text>
+    </View>
+  );
+}
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] ?? '';
+  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '';
+  return (first + last).toUpperCase();
+}
+
+function showMessage(title: string, message: string) {
+  if (Platform.OS === 'web') window.alert(`${title}\n${message}`);
+  else Alert.alert(title, message);
 }

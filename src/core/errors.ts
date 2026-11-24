@@ -11,6 +11,8 @@ export type AppErrorCode =
   | 'FORBIDDEN' // login hai par permission nahi
   | 'NOT_FOUND'
   | 'VALIDATION' // user ne galat input diya
+  | 'RATE_LIMITED' // bahut jaldi-jaldi try kiya (jaise OTP baar-baar maanga)
+  | 'CONFIG' // developer setup adhoora hai (jaise .env.local nahi bana)
   | 'UNKNOWN';
 
 export class AppError extends Error {
@@ -32,6 +34,8 @@ const USER_MESSAGES: Record<AppErrorCode, string> = {
   FORBIDDEN: 'Aapko ye karne ki permission nahi hai.',
   NOT_FOUND: 'Ye cheez nahi mili.',
   VALIDATION: 'Di gayi jaankari check karein.',
+  RATE_LIMITED: 'Bahut baar try ho gaya. Ek minute baad dobara try karein.',
+  CONFIG: 'App ka setup adhoora hai. Developer se sampark karein.',
   UNKNOWN: 'Kuch gadbad ho gayi. Thodi der baad try karein.',
 };
 
