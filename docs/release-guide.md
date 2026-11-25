@@ -33,8 +33,8 @@ Google ka rule: personal accounts (13 Nov 2023 ke baad bane) ko production se pe
 
 ## Step 2: Contact email + Privacy Policy online [Tum]
 
-1. Ek email chuno jo store par **public** dikhega. Suggestion: ek nayi Gmail, jaise `faujidhara.app@gmail.com`.
-2. `docs/privacy-policy.md` aur `docs/store-listing.md` mein `[CONTACT_EMAIL]` badlo. Ya mujhe email batao, main badal dunga.
+1. ✅ App ke liye alag Gmail bani: `faujidhara@gmail.com` (store par public dikhega).
+2. ✅ App ka contact email `faujidhara@gmail.com` privacy policy aur store listing mein daal diya gaya hai.
 3. GitHub repo → **Settings → Pages** → Source: _Deploy from a branch_ → Branch: `main`, folder `/docs` → Save.
 4. 1–2 minute baad ye khulna chahiye: <https://prakash70428.github.io/FaujiDhara/privacy-policy>
 
