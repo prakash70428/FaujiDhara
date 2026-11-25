@@ -1,0 +1,11 @@
+# Store and check out text files with LF line endings on every OS, so Prettier
+# (endOfLine: lf) and CI on Linux agree with Windows working copies.
+* text=auto eol=lf
+
+# Binary files: never touch line endings.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.glb binary
+*.ttf binary
