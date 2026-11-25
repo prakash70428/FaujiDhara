@@ -1,21 +1,25 @@
 {
   "expo": {
     "name": "FaujiDhara",
-    "slug": "FaujiDhara",
+    "slug": "faujidhara",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#FAF7F0",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.faujidhara.app"
     },
     "android": {
+      "package": "com.faujidhara.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#556B2F",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [],
       "predictiveBackGestureEnabled": false
     },
     "web": {
@@ -28,7 +32,15 @@
       "expo-font",
       "expo-asset",
       "expo-sqlite",
-      "expo-splash-screen"
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#556B2F"
+        }
+      ]
     ],
     "scheme": "faujidhara",
     "experiments": {

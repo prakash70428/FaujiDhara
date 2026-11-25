@@ -5,6 +5,7 @@ import { SplashScreen, Stack, type ErrorBoundaryProps } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { FEATURES } from '@/core/config/features';
 import { getUserMessage } from '@/core/errors';
 import { AuthStatusScreen } from '@/features/auth/components/AuthShell';
 import { AuthProvider, useAuth } from '@/features/auth/hooks/AuthProvider';
@@ -30,13 +31,18 @@ export default function RootLayout() {
 }
 
 /**
- * Which screens exist depends on the login status. `Stack.Protected` removes the
+ * Which screens exist depends on the login status. With the `auth` feature flag off
+ * (v1.0), everyone is a 'guest' and only the offline screens exist.
+ * `Stack.Protected` removes the
  * screens whose guard is false, and Expo Router redirects away from them on its own.
  * So a logged-out user cannot open the feed even with a deep link, and a logged-in
  * user never lands back on the login screen.
  */
 function RootNavigator() {
-  const { status, error, retry } = useAuth();
+  const auth = useAuth();
+  const status = FEATURES.auth ? auth.status : 'guest';
+  const { error, retry } = auth;
+  const appOpen = status === 'ready' || status === 'guest';
 
   useEffect(() => {
     if (status !== 'loading') SplashScreen.hide();
@@ -84,10 +90,14 @@ function RootNavigator() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={status === 'ready'}>
+      <Stack.Protected guard={appOpen}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="state/[stateId]" options={{ title: 'Rajya' }} />
         <Stack.Screen name="plant/[plantId]" options={{ title: 'Paudha' }} />
+        <Stack.Screen name="about" options={{ title: 'App ke baare mein' }} />
+      </Stack.Protected>
+
+      <Stack.Protected guard={status === 'ready'}>
         <Stack.Screen name="edit-profile" options={{ title: 'Profile badlein' }} />
       </Stack.Protected>
     </Stack>
