@@ -12,6 +12,7 @@ import { seedFromString } from '../domain/random';
 import { CAMERA_FOV, frameScene, type SceneSize } from '../domain/sceneLayout';
 import { useOrbitGestures } from '../hooks/useOrbitGestures';
 
+import { createGuardedRenderer } from './scene/guardedRenderer';
 import { PlantScene } from './scene/PlantScene';
 
 type Plant3DViewerProps = {
@@ -69,6 +70,15 @@ export function Plant3DViewer({
   );
   const seed = useMemo(() => seedFromString(plant.id), [plant.id]);
 
+  // A failure inside the 3D render loop happens outside React. We catch it in the
+  // renderer (see guardedRenderer) and re-throw it here, during render, so the
+  // ErrorBoundary around this viewer shows a fallback instead of the app closing.
+  const [renderError, setRenderError] = useState<Error | null>(null);
+  const [gl] = useState(() =>
+    createGuardedRenderer({ antialias: true, powerPreference: 'low-power' }, setRenderError),
+  );
+  if (renderError) throw renderError;
+
   return (
     <View
       onLayout={onLayout}
@@ -82,7 +92,7 @@ export function Plant3DViewer({
             frameloop="demand"
             dpr={[1, 1.5]} // cap pixel density: big GPU saving on high-res budget phones
             camera={{ fov: CAMERA_FOV, near: 0.05, far: 2000, position: [0, 0, framing.distance] }}
-            gl={{ antialias: true, powerPreference: 'low-power' }}
+            gl={gl}
           >
             <PlantScene
               plant={plant}

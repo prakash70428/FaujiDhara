@@ -43,7 +43,7 @@ export function Plant3DCard({ plant }: { plant: Plant }) {
   return (
     <Card className={cn('gap-4 p-3', wide && 'flex-row items-start')}>
       <View className={cn('gap-3', wide ? 'flex-1' : 'w-full')}>
-        <ErrorBoundary fallback={<Viewer3DFallback />}>
+        <ErrorBoundary fallback={(error) => <Viewer3DFallback error={error} />}>
           <Plant3DViewer
             plant={plant}
             size={size}
@@ -121,12 +121,16 @@ function Toggle({
   );
 }
 
-function Viewer3DFallback() {
+function Viewer3DFallback({ error }: { error: Error }) {
   return (
     <View className="h-48 items-center justify-center gap-2 rounded-2xl bg-background p-6">
       <Ionicons name="cube-outline" size={32} color={colors.ink.muted} />
       <Text className="text-center text-sm text-ink-muted">
         Is phone par 3D nahi chal paaya. Neeche diye gaye naap poori jaankari dete hain.
+      </Text>
+      {/* Technical detail, so a tester's screenshot tells us what failed on that phone. */}
+      <Text selectable className="text-center text-[10px] text-ink-muted/70" numberOfLines={3}>
+        {error.message}
       </Text>
     </View>
   );
