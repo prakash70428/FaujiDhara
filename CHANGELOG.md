@@ -12,6 +12,11 @@ production build; only `version` in `app.json` is changed by hand.
 
 ## [Unreleased]
 
+### Fixed
+
+- App no longer closes when the 3D view fails on a phone; a fallback card with the
+  technical reason is shown instead (Android, tomato/cucumber report)
+
 ### Built, switched off for v1.0 (feature flags)
 
 - Phone OTP login, onboarding and profile (Supabase)

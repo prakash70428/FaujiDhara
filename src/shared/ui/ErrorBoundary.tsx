@@ -2,12 +2,12 @@ import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
-  /** What to show instead of the crashed part. */
-  fallback: ReactNode;
+  /** What to show instead of the crashed part. A function also receives the error. */
+  fallback: ReactNode | ((error: Error) => ReactNode);
   onError?: (error: Error, info: ErrorInfo) => void;
 };
 
-type State = { failed: boolean };
+type State = { error: Error | null };
 
 /**
  * Catches a crash in ONE part of a screen (e.g. the 3D viewer on a phone whose GPU
@@ -15,10 +15,10 @@ type State = { failed: boolean };
  * React only supports this with a class component.
  */
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = { failed: false };
+  state: State = { error: null };
 
-  static getDerivedStateFromError(): State {
-    return { failed: true };
+  static getDerivedStateFromError(error: unknown): State {
+    return { error: error instanceof Error ? error : new Error(String(error)) };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
@@ -26,6 +26,9 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   render() {
-    return this.state.failed ? this.props.fallback : this.props.children;
+    const { error } = this.state;
+    if (!error) return this.props.children;
+    const { fallback } = this.props;
+    return typeof fallback === 'function' ? fallback(error) : fallback;
   }
 }
