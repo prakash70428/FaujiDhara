@@ -1,6 +1,6 @@
 # Release Guide: v1.0 se Play Store tak
 
-Har step ke aage likha hai ki kaun karega: **[Tum]** = sirf tum kar sakte ho (account, payment, ID), **[Claude]** = main code/config mein kar dunga.
+Har step ke aage likha hai ki kaun karega: **[Tum]** = sirf tum kar sakte ho (account, payment, ID), **[Dev]** = code/config ka kaam, is repo mein.
 
 ---
 
@@ -8,8 +8,8 @@ Har step ke aage likha hai ki kaun karega: **[Tum]** = sirf tum kar sakte ho (ac
 
 ```
 Din 0      Play Console account + ID verification shuru          [Tum]
-Din 0-3    v1.0 code ready (ye PR)                               [Claude] ✅
-Din 1-3    Expo account, pehla build, app Play Console mein banao [Tum + Claude]
+Din 0-3    v1.0 code ready (ye PR)                               [Dev] ✅
+Din 1-3    Expo account, pehla build, app Play Console mein banao [Tum + Dev]
 Din 3      Closed testing release, 12+ testers opt-in → ⏱ 14 din shuru
 Din 3-17   Testers app use karein; hum v1.1 (login) taiyar karein
 Din 17+    "Apply for production" → Google review (aksar ≤ 7 din)
@@ -88,7 +88,7 @@ Build hone par `.aab` file download karo.
 
 ---
 
-## Har release se pehle checklist [Claude + Tum]
+## Har release se pehle checklist [Dev + Tum]
 
 - [ ] `npm run check` green, aur GitHub Actions CI green
 - [ ] `CHANGELOG.md` updated, `app.json` → `version` badhaya
@@ -97,7 +97,7 @@ Build hone par `.aab` file download karo.
 - [ ] Release notes (Hindi + English)
 - [ ] Git tag: `git tag v1.0.0` → `git push origin v1.0.0`
 
-## v1.1 (login) se pehle zaroori [Claude]
+## v1.1 (login) se pehle zaroori [Dev]
 
 - [ ] App ke andar **account delete** ka option + web link (Play policy)
 - [ ] Privacy policy v1.1 (phone, naam, rajya/zila, Supabase Mumbai region)
