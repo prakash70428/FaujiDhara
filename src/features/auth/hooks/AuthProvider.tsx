@@ -9,6 +9,7 @@ import {
   type PropsWithChildren,
 } from 'react';
 
+import { FEATURES } from '@/core/config/features';
 import { AppError, toAppError } from '@/core/errors';
 import { isSupabaseConfigured } from '@/core/supabase';
 
@@ -69,7 +70,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   // 1. Session listener. Supabase fires it once at start with the saved session.
   useEffect(() => {
-    if (!isSupabaseConfigured) return;
+    // Login switched off (v1.0): never touch the backend.
+    if (!FEATURES.auth || !isSupabaseConfigured) return;
     return authRepository.onSessionChange((next) => {
       setSession(next);
       setSessionLoaded(true);
