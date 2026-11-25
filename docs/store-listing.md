@@ -67,7 +67,7 @@ Phone screenshots: take them on a real phone (Power + Volume-down). 9:16 portrai
 | ----------- | ---------------------------------------------------------- |
 | Category    | **Education**                                              |
 | Tags        | Agriculture, Education, Reference                          |
-| Email       | `[CONTACT_EMAIL]` (shown publicly on the store page)       |
+| Email       | `faujidhara@gmail.com` (shown publicly on the store page)  |
 | Website     | `https://github.com/prakash70428/FaujiDhara` (optional)    |
 | Privacy URL | `https://prakash70428.github.io/FaujiDhara/privacy-policy` |
 

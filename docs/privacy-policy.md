@@ -8,7 +8,7 @@ permalink: /privacy-policy
 **Last updated:** 26 November 2026
 **Applies to:** FaujiDhara Android app, version 1.0 and later 1.0.x updates
 **Developer:** Prakash (individual developer)
-**Contact:** [CONTACT_EMAIL]
+**Contact:** faujidhara@gmail.com
 
 ## Summary
 
@@ -52,4 +52,4 @@ you can delete your account and data. The "Last updated" date above will change.
 
 ## Contact
 
-For any question about this policy, email **[CONTACT_EMAIL]**.
+For any question about this policy, email **faujidhara@gmail.com**.
