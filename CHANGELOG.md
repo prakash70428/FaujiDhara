@@ -12,6 +12,12 @@ production build; only `version` in `app.json` is changed by hand.
 
 ## [Unreleased]
 
+### Changed
+
+- Bottom tab bar is back with all four tabs: Feed, Khet, Fasal, Profile. The app opens on
+  Fasal. Feed and Khet show what is coming; Profile shows a guest card with About,
+  privacy policy and contact until login ships
+
 ### Fixed
 
 - App no longer closes when the 3D view fails on a phone; a fallback card with the

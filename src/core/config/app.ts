@@ -8,4 +8,6 @@ export const APP_INFO = {
   /** Hosted from docs/privacy-policy.md by GitHub Pages. Must match the Play Console field. */
   privacyPolicyUrl: 'https://prakash70428.github.io/FaujiDhara/privacy-policy',
   sourceUrl: 'https://github.com/prakash70428/FaujiDhara',
+  /** Public support address, same as the Play Store listing. */
+  contactEmail: 'faujidhara@gmail.com',
 } as const;
