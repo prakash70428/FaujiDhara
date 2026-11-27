@@ -1,8 +1,10 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
-import { Alert, Platform, Text, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
+import { APP_INFO } from '@/core/config/app';
+import { FEATURES } from '@/core/config/features';
 import { getUserMessage } from '@/core/errors';
 import { formatIndianMobile } from '@/features/auth/domain/phone';
 import { ROLE_INFO } from '@/features/auth/domain/types';
@@ -11,8 +13,102 @@ import { useStateName } from '@/features/auth/hooks/useStateOptions';
 import { colors } from '@/shared/theme/colors';
 import { Button, Card, Screen } from '@/shared/ui';
 
-/** The logged-in user's profile, with edit and logout. */
+/** Logged-in profile when login is on (v1.1+); a guest screen before that (v1.0). */
 export default function ProfileScreen() {
+  return FEATURES.auth ? <SignedInProfile /> : <GuestProfile />;
+}
+
+function GuestProfile() {
+  return (
+    <Screen scroll className="w-full max-w-[640px] self-center pb-12">
+      <Card className="items-center gap-3 py-6">
+        <View className="h-20 w-20 items-center justify-center rounded-full bg-primary-50">
+          <Ionicons name="person" size={36} color={colors.primary[600]} />
+        </View>
+        <Text className="text-xl font-bold text-ink">Mehmaan</Text>
+        <Text className="text-center text-sm text-ink-muted">
+          Abhi bina login ke poora Fasal Calendar aur 3D naap use kar sakte hain.
+        </Text>
+      </Card>
+
+      <Card className="gap-3">
+        <View className="flex-row items-center gap-2">
+          <Ionicons name="time-outline" size={18} color={colors.earth[700]} />
+          <Text className="text-base font-bold text-ink">Login jald aa raha hai</Text>
+        </View>
+        <Text className="text-sm text-ink-muted">
+          Agle update mein mobile number aur OTP se login hoga. Uske saath:
+        </Text>
+        {[
+          'Fauji ya Kisan ki pehchaan wali profile',
+          'Community mein post aur sawaal',
+          'Khet listings dena aur dekhna',
+          'Verified Fauji badge',
+        ].map((f) => (
+          <View key={f} className="flex-row items-start gap-3">
+            <Ionicons name="checkmark-circle" size={18} color={colors.primary[600]} />
+            <Text className="flex-1 text-sm text-ink">{f}</Text>
+          </View>
+        ))}
+      </Card>
+
+      <Card className="gap-1 p-2">
+        <LinkRow
+          icon="information-circle-outline"
+          label="App ke baare mein"
+          onPress={() => router.push('/about')}
+        />
+        <LinkRow
+          icon="document-text-outline"
+          label="Privacy Policy"
+          external
+          onPress={() => void Linking.openURL(APP_INFO.privacyPolicyUrl)}
+        />
+        <LinkRow
+          icon="mail-outline"
+          label={`Sampark: ${APP_INFO.contactEmail}`}
+          external
+          onPress={() => void Linking.openURL(`mailto:${APP_INFO.contactEmail}`)}
+        />
+      </Card>
+
+      <Text className="text-center text-xs text-ink-muted">
+        {APP_INFO.name} · Version {APP_INFO.version}
+      </Text>
+    </Screen>
+  );
+}
+
+function LinkRow({
+  icon,
+  label,
+  external,
+  onPress,
+}: {
+  icon: ComponentProps<typeof Ionicons>['name'];
+  label: string;
+  external?: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      accessibilityRole={external ? 'link' : 'button'}
+      onPress={onPress}
+      className="h-12 flex-row items-center gap-3 rounded-xl px-3 active:bg-primary-50"
+    >
+      <Ionicons name={icon} size={20} color={colors.primary[600]} />
+      <Text className="flex-1 text-base text-ink">{label}</Text>
+      <Ionicons
+        name={external ? 'open-outline' : 'chevron-forward'}
+        size={18}
+        color={colors.ink.muted}
+      />
+    </Pressable>
+  );
+}
+
+/** The logged-in user's profile, with edit and logout. */
+function SignedInProfile() {
   const { session, profile } = useSignedInUser();
   const { signOut } = useAuth();
   const stateName = useStateName(profile.stateId) ?? profile.stateId;

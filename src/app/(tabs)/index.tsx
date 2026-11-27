@@ -1,19 +1,55 @@
-import { Redirect } from 'expo-router';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { SectionList, Text, View } from 'react-native';
 
-import { FEATURES } from '@/core/config/features';
-import { EmptyState, Screen } from '@/shared/ui';
+import { SeasonGuide } from '@/features/crops/components/SeasonGuide';
+import { StateListItem } from '@/features/crops/components/StateListItem';
+import { useStateDirectory } from '@/features/crops/hooks/useStateDirectory';
+import { colors } from '@/shared/theme/colors';
+import { EmptyState, Input } from '@/shared/ui';
 
-// Phase 4 will replace this with the real community feed.
-export default function FeedScreen() {
-  // "/" is the first screen the app opens. Without the feed (v1.0) open Fasal instead.
-  if (!FEATURES.feed) return <Redirect href="/fasal" />;
+/** Fasal tab: season guide on top, then all 28 states and 8 UTs A→Z with search. */
+export default function FasalScreen() {
+  const [query, setQuery] = useState('');
+  const sections = useStateDirectory(query);
+
   return (
-    <Screen>
-      <EmptyState
-        icon="chatbubbles-outline"
-        title="Abhi koi post nahi"
-        message="Faujiyon aur kisanon ki posts yahan dikhengi."
-      />
-    </Screen>
+    // NativeWind v4 doesn't map className on SectionList, so lists use plain style props.
+    <SectionList
+      style={{ flex: 1, backgroundColor: colors.background }}
+      contentContainerStyle={{ gap: 8, padding: 16, paddingBottom: 40 }}
+      sections={sections}
+      keyExtractor={(s) => s.id}
+      stickySectionHeadersEnabled={false}
+      keyboardShouldPersistTaps="handled"
+      ListHeaderComponent={
+        <View className="mb-2 gap-4">
+          <SeasonGuide />
+          <Input
+            placeholder="Rajya ya ilaka dhoondhein (jaise: Punjab, South)"
+            value={query}
+            onChangeText={setQuery}
+            autoCorrect={false}
+            accessibilityLabel="Rajya dhoondhein"
+          />
+        </View>
+      }
+      renderSectionHeader={({ section }) => (
+        <Text className="mt-2 text-sm font-bold uppercase tracking-wide text-ink-muted">
+          {section.title}
+        </Text>
+      )}
+      renderItem={({ item }) => (
+        <StateListItem
+          state={item}
+          onPress={() =>
+            router.push({ pathname: '/state/[stateId]', params: { stateId: item.id } })
+          }
+        />
+      )}
+      ListEmptyComponent={
+        <EmptyState icon="search" title="Koi rajya nahi mila" message="Doosra naam try karein." />
+      }
+    />
   );
 }
